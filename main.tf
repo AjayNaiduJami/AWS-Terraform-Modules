@@ -43,8 +43,10 @@ module "security_group" {
   source      = "./Modules/Network/security_group"
   sg_data = "${var.security_groups}"
   vpc_id      = "${module.vpc.vpc_id[0]}"
-  
-  environment = "${var.environment}"
   security_group_rule = "${var.security_group_rule}"
   security_group_id = "${module.security_group.security_group_id[1]}"
+  
+#Web SVR security group rule, (Web servers can only be accessed via port 22 (SSH) from Bastian SVR)
+  source_security_group_id = "${module.security_group.security_group_id[0]}"
+  environment = "${var.environment}"
 }

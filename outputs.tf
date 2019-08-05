@@ -41,3 +41,7 @@ output "nat_gw_id" {
 output "security_group_id" {
   value = "${module.security_group.security_group_id}"
 }
+
+output "instance_id" {
+  value = "${module.instance.instance_id}"
+}

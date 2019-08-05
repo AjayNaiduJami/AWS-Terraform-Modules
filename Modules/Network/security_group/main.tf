@@ -29,5 +29,6 @@ resource "aws_security_group_rule" "ssh" {
   from_port       = "${lookup(var.security_group_rule[count.index],"from_port")}"
   to_port         = "${lookup(var.security_group_rule[count.index],"to_port")}"
   protocol        = "${lookup(var.security_group_rule[count.index],"protocol")}"
+  source_security_group_id = "${var.source_security_group_id}"
   security_group_id = "${var.security_group_id}"
 }

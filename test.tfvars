@@ -227,6 +227,7 @@ security_groups = [
 ]
 
 security_group_rule = [
+#Additional Web SVR security group rule, (Web servers can only be accessed via port 22 (SSH) from Bastian SVR)
     {
         type            = "ingress"
         from_port       = "22"
