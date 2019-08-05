@@ -1,6 +1,3 @@
-variable "vpc_id" {
-  type = "string"
-}
 
 variable "instance_data" {
   type = "list"
@@ -8,4 +5,12 @@ variable "instance_data" {
 
 variable "environment" {
   type = "string"
+}
+
+variable "subnet" {
+  type = "list"
+}
+
+variable "security_group" {
+  type = "list"
 }

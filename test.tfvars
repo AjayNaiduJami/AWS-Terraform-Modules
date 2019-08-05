@@ -165,9 +165,8 @@ instances = [
         ami = "ami-009110a2bf8d7dd0a"
         instance_type = "t2.micro"
         associate_public_ip_address = "1"
-        subnet = "${module.subnets.public_subnet_id[0]}"
-        name = "Bastian SVR"
-        user_data = ""
+        subnet = "public_subnet-1a"
+        name = "Bastian_SVR"
         tags = {
             Domain  = "qa.techtales.com"
             Purpose = "Practice"
@@ -178,9 +177,8 @@ instances = [
         ami = "ami-009110a2bf8d7dd0a"
         instance_type = "t2.micro"
         associate_public_ip_address = "0"
-        subnet = "${module.subnets.private_subnet_id[0]}"
-        name = "Web SVR 1"
-        user_data = ""
+        subnet = "private_subnet-1a"
+        name = "Web_SVR_1"
         tags = {
             Domain  = "qa.techtales.com"
             Purpose = "Practice"
@@ -191,10 +189,8 @@ instances = [
         ami = "ami-009110a2bf8d7dd0a"
         instance_type = "t2.micro"
         associate_public_ip_address = "0"
-        subnet = "${module.subnets.private_subnet_id[1]}"
-        name = "Web SVR 2"
-        security_group = ""
-        user_data = ""
+        subnet = "private_subnet-1b"
+        name = "Web_SVR_2"
         tags = {
             Domain  = "qa.techtales.com"
             Purpose = "Practice"
@@ -207,33 +203,34 @@ security_groups = [
     {
         name = "Bastian SG"
         description = "Allow ssh traffic"
-        ingress_from_port = 22
-        ingress_to_port = 22
+        ingress_from_port = "22"
+        ingress_to_port = "22"
         ingress_protocol = "tcp"
-        ingress_cidr_blocks = ["0.0.0.0/0"]
-        egress_from_port = 0
-        egress_to_port = 0
+        ingress_cidr_blocks = "0.0.0.0/0"
+        egress_from_port = "0"
+        egress_to_port = "0"
         egress_protocol = "-1"
-        egress_cidr_blocks = ["0.0.0.0/0"]
+        egress_cidr_blocks = "0.0.0.0/0"
     },
     {
         name = "Web SG"
-        description = "Allow bastian http traffic"
-        ingress_from_port = 80
-        ingress_to_port = 80
+        description = "Allow http traffic"
+        ingress_from_port = "80"
+        ingress_to_port = "80"
         ingress_protocol = "tcp"
-        egress_from_port = 0
-        egress_to_port = 0
+        ingress_cidr_blocks = "0.0.0.0/0"
+        egress_from_port = "0"
+        egress_to_port = "0"
         egress_protocol = "-1"
-        egress_cidr_blocks = ["0.0.0.0/0"]
+        egress_cidr_blocks = "0.0.0.0/0"
     }
 ]
 
 security_group_rule = [
     {
         type            = "ingress"
-        from_port       = 22
-        to_port         = 22
+        from_port       = "22"
+        to_port         = "22"
         protocol        = "tcp"
     }
 ]
