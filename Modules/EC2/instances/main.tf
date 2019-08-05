@@ -5,6 +5,7 @@ resource "aws_instance" "SVR" {
   vpc_security_group_ids = ["${element(var.security_group,count.index)}"]
   subnet_id              = "${element(var.subnet,count.index)}"
   associate_public_ip_address = "${lookup(var.instance_data[count.index],"associate_public_ip_address")}"
+  user_data = "${file(var.file)}"
   key_name = "Terraform"
   tags = {
     Name = "${lookup(var.instance_data[count.index],"name")}"

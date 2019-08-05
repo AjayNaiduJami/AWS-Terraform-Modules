@@ -27,6 +27,7 @@ module "instance" {
   source      = "./Modules/EC2/instances"
   instance_data = "${var.instances}"
   environment = "${var.environment}"
+  file = "install_apache.sh"
   subnet = [
     "${module.subnets.public_subnet_id[0]}",
     "${module.subnets.private_subnet_id[0]}",

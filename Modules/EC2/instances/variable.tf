@@ -14,3 +14,5 @@ variable "subnet" {
 variable "security_group" {
   type = "list"
 }
+
+variable "file" {}
