@@ -43,14 +43,6 @@ nat_gateways = [
             Purpose = "Practice"
             AvailabilityZone = "ap-south-1b"
         }
-    },
-    {
-        name = "public-1c.qa.techtales.com"
-        tags = {
-            Domain  = "qa.techtales.com"
-            Purpose = "Practice"
-            AvailabilityZone = "ap-south-1c"
-        }
     }
 ]
 
@@ -69,16 +61,6 @@ private_subnets = [
         name = "private-1b.qa.techtales.com"
         cidr = "10.1.101.0/24"
         availability_zone = "ap-south-1b"
-        tags = {
-            Domain     = "qa.techtales.com"
-            Purpose    = "Practice"
-            SubnetType = "Private"
-        }
-    }, 
-    {
-        name = "private-1c.qa.techtales.com"
-        cidr = "10.1.102.0/24"
-        availability_zone = "ap-south-1c"
         tags = {
             Domain     = "qa.techtales.com"
             Purpose    = "Practice"
@@ -108,18 +90,7 @@ public_subnets = [
             Purpose    = "Practice"
             SubnetType = "Public"
         }
-    },
-    {
-        name = "public-1c.qa.techtales.com"
-        cidr = "10.1.3.0/24"
-        availability_zone = "ap-south-1c"
-        tags = {
-            Domain     = "qa.techtales.com"
-            Purpose    = "Practice"
-            SubnetType = "Public"
-        }
     }
-    
 ]
 
 private_subnet_route_tables = [
@@ -133,14 +104,6 @@ private_subnet_route_tables = [
     },
     {
         name = "private-1b-rt.qa.techtales.com"
-        tags = {
-            Domain     = "qa.techtales.com"
-            Purpose    = "Practice"
-            RouteTableType = "Private"
-        }
-    },
-    {
-        name = "private-1c-rt.qa.techtales.com"
         tags = {
             Domain     = "qa.techtales.com"
             Purpose    = "Practice"
@@ -202,36 +165,48 @@ instances = [
 security_groups = [
     {
         name = "Bastian SG"
-        description = "Allow ssh traffic"
-        ingress_from_port = "22"
-        ingress_to_port = "22"
-        ingress_protocol = "tcp"
-        ingress_cidr_blocks = "0.0.0.0/0"
-        egress_from_port = "0"
-        egress_to_port = "0"
-        egress_protocol = "-1"
-        egress_cidr_blocks = "0.0.0.0/0"
+        description = "Bastian SG - Allow ssh traffic"
     },
     {
         name = "Web SG"
-        description = "Allow http traffic"
-        ingress_from_port = "80"
-        ingress_to_port = "80"
-        ingress_protocol = "tcp"
-        ingress_cidr_blocks = "0.0.0.0/0"
-        egress_from_port = "0"
-        egress_to_port = "0"
-        egress_protocol = "-1"
-        egress_cidr_blocks = "0.0.0.0/0"
+        description = "Web SG - Allow SSH from Bastian and http https from outer network"
     }
 ]
 
-security_group_rule = [
-#Additional Web SVR security group rule, (Web servers can only be accessed via port 22 (SSH) from Bastian SVR)
+security_group_rules = [
+    #Bastian SG Rule (SSH)
+    {
+        type        = "ingress"
+        from_port   = "22"
+        to_port     = "22"
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+    },
+    #WebSVR SG Rule (http)
+    {
+        type        = "ingress"
+        from_port   = "80"
+        to_port     = "80"
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+    },
+    #WebSVR SG Rule (https)
+    {
+        type        = "ingress"
+        from_port   = "443"
+        to_port     = "443"
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+    }
+]    
+
+additional_security_group_rules = [
+    #WebSVR SG rule, (Access WebSVRs through BastianSVR from port 22[SSH])
     {
         type            = "ingress"
         from_port       = "22"
         to_port         = "22"
         protocol        = "tcp"
+        source_security_group_id = "Bastian SG"
     }
 ]

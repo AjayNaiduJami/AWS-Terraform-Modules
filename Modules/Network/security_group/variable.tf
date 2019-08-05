@@ -11,7 +11,7 @@ variable "security_group_rule" {
 }
 
 variable "security_group_id" {
-  type = "string"
+  type = "list"
 }
 
 variable "source_security_group_id" {
@@ -22,3 +22,10 @@ variable "vpc_id" {
   type = "string"
 }
 
+variable "additional_security_group_rule" {
+  type = "list"
+}
+
+variable "additional_security_group_id" {
+  type = "string"
+}

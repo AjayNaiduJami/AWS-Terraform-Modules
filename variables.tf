@@ -50,6 +50,10 @@ variable "instances"  {
   type = "list"
   }
 
-variable "security_group_rule" {
+variable "security_group_rules" {
+  type = "list"
+}
+
+variable "additional_security_group_rules" {
   type = "list"
 }
