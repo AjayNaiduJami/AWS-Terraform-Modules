@@ -15,8 +15,16 @@ module "subnets" {
   environment = "${var.environment}"
   private_subnet = "Private"
   public_subnet = "Public"
+  nat_gw_id = "${module.nat_gw.nat_gw_id}"
+}
+
+module "nat_gw" {
+  source      = "./Modules/Network/nat_gw"
+  public_subnets    = "${var.public_subnets}"
   nat_gw = "${var.nat_gateways}"
-  }
+  subnet_association = "${module.subnets.public_subnet_id}"
+  environment = "${var.environment}"
+}
 
 module "igw" {
   source      = "./Modules/Network/igw"

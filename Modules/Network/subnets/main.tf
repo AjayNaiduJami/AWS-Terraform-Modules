@@ -16,7 +16,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id     = "${var.vpc_id}"
   route{
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = "${element(aws_nat_gateway.nat_gw.*.id,count.index)}"
+    nat_gateway_id = "${element(var.nat_gw_id,count.index)}"
   }
   tags = {
    Terraformed = "True"
@@ -64,22 +64,4 @@ resource "aws_route_table_association" "public_rt_association" {
   count = "${length(var.public_subnets)}"
   subnet_id     = "${element(aws_subnet.public_subnet.*.id,count.index)}"
   route_table_id = "${element(aws_route_table.public_route_table.*.id,count.index)}"
-}
-
-
-resource "aws_eip" "eip" {
-  vpc   = true
-  count = "${length(var.nat_gw)}" 
-}
-
-resource "aws_nat_gateway" "nat_gw" {
-  count = "${length(var.nat_gw)}"
-  subnet_id     = "${element(aws_subnet.public_subnet.*.id,count.index)}"
-  allocation_id = "${element(aws_eip.eip.*.id,count.index)}"
-  tags = {
-    Terraformed = "True"
-    Environment = "${var.environment}"
-    availability_zone = "${lookup(var.nat_gw[count.index],"name")}"
-    Name = "${lookup(var.public_subnets[count.index],"availability_zone")}"
-  }
 }

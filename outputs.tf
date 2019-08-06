@@ -31,11 +31,11 @@ output "igw_id" {
 }
 
 output "eip_id" {
-  value = "${module.subnets.eip_id}"
+  value = "${module.nat_gw.eip_id}"
 }
 
 output "nat_gw_id" {
-  value = "${module.subnets.nat_gw_id}"
+  value = "${module.nat_gw.nat_gw_id}"
 }
 
 output "security_group_id" {

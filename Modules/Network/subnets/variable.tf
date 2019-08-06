@@ -10,9 +10,10 @@ variable "igw" {
   type = "string"
 }
 
-variable "nat_gw" {
+variable "nat_gw_id" {
   type = "list"
 }
+
 
 variable "private_subnets" {
   type = "list"
