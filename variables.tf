@@ -10,6 +10,10 @@ variable "secret_key" {
   type = "string"
 }
 
+variable "name" {
+  type = "string"
+}
+
 variable "environment" {
   type = "string"
 }
@@ -55,5 +59,17 @@ variable "security_group_rules" {
 }
 
 variable "additional_security_group_rules" {
+  type = "list"
+}
+
+variable "elbs" {
+  type = "list"
+}
+
+variable "launch_configurations" {
+  type = "list"
+}
+
+variable "autoscaling_groups" {
   type = "list"
 }

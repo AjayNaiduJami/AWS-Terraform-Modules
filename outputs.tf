@@ -45,3 +45,15 @@ output "security_group_id" {
 output "instance_id" {
   value = "${module.instance.instance_id}"
 }
+
+output "elb_id" {
+  value = "${module.elb.elb_id}"
+}
+
+output "launch_configuration_id" {
+  value = "${module.launch_configuration.launch_configuration_id}"
+}
+
+output "autoscaling_group_id" {
+  value = "${module.autoscaling_group.autoscaling_group_id}"
+}

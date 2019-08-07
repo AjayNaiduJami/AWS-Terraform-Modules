@@ -170,6 +170,10 @@ security_groups = [
     {
         name = "Web SG"
         description = "Web SG - Allow SSH from Bastian and http https from outer network"
+    },
+    {
+        name = "ELB SG"
+        description = "ELB SG - Allow http and https traffic"
     }
 ]
 
@@ -182,7 +186,7 @@ security_group_rules = [
         protocol    = "tcp"
         cidr_blocks = "0.0.0.0/0"
     },
-    #WebSVR SG Rule (http)
+    #ELB SG Rule (http)
     {
         type        = "ingress"
         from_port   = "80"
@@ -190,7 +194,7 @@ security_group_rules = [
         protocol    = "tcp"
         cidr_blocks = "0.0.0.0/0"
     },
-    #WebSVR SG Rule (https)
+    #ELB SG Rule (https)
     {
         type        = "ingress"
         from_port   = "443"
@@ -208,5 +212,76 @@ additional_security_group_rules = [
         to_port         = "22"
         protocol        = "tcp"
         source_security_group_id = "Bastian SG"
+    },
+    #WebSVR SG rule, (Access WebSVRs through ELB from port 80[http])
+    {
+        type            = "ingress"
+        from_port       = "80"
+        to_port         = "80"
+        protocol        = "tcp"
+        source_security_group_id = "ELB SG"
+    },
+    #WebSVR SG rule, (Access WebSVRs through ELB from port 443[https])
+    {
+        type            = "ingress"
+        from_port       = "443"
+        to_port         = "443"
+        protocol        = "tcp"
+        source_security_group_id = "ELB SG"
+    }
+]
+
+elbs = [
+    {
+        name               = "websvr-elb"
+        availability_zones = "region specific" #availability zones mention in separate section, refet to top
+        subnets = "Public subnets of websvr" 
+        security_groups = "sg-elb" 
+        instances = "websvrs" #attach this ELB to Autoscalinggroup for adding instances
+        #listener
+        instance_port     = "80"
+        instance_protocol = "http"
+        lb_port           = "80"
+        lb_protocol       = "http"
+        #health_check
+        healthy_threshold   = "2"
+        unhealthy_threshold = "2"
+        timeout             = "5"
+        target              = "TCP:80"
+        interval            = "10"
+        tags = {
+            Name = "websvr-elb"
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
+    }
+]
+
+launch_configurations = [
+    {
+        name   = "WebSVR-Launch-Configuration"
+        image_id      = "ami-009110a2bf8d7dd0a"
+        instance_type = "t2.micro"
+        associate_public_ip_address = "0"
+        security_groups = "Web SG" #Web SVR SG
+        tags = {
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
+
+    }
+]
+autoscaling_groups = [
+    {
+        name                      = "WebSVR-AutoScaling"
+        desired_capacity          = "2"
+        vpc_zone_identifier       = "VPC private subnets" #subnets private
+        max_size                  = "2"
+        min_size                  = "2"
+        load_balancers = "" #websvr lb can be atted to autoassign autoscaled instances to LB
+        tags = {
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
     }
 ]
