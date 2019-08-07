@@ -13,7 +13,6 @@ Terraform AWS Individual Modules
 - Creation of public and private subnets
 - Creation of public and private subnet route table
 - Assocation of subnets to route tables
-- Creation of nat gateway
 ### Internet Gateway
 - Creation of internet gateway
 - Association of internet gateway with vpc
