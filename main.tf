@@ -60,14 +60,10 @@ module "instance" {
   environment = "${var.environment}"
   file = "install_apache.sh"
   subnet = [
-    "${module.subnets.public_subnet_id[0]}",
-    "${module.subnets.private_subnet_id[0]}",
-    "${module.subnets.private_subnet_id[1]}"
+    "${module.subnets.public_subnet_id[0]}"
   ]
   security_group = [
-    "${module.security_group.security_group_id[0]}",
-    "${module.security_group.security_group_id[1]}",
-    "${module.security_group.security_group_id[1]}"
+    "${module.security_group.security_group_id[0]}"
   ]
 }
 
@@ -80,8 +76,7 @@ module "elb" {
   ]
   elb_security_groups = ["${module.security_group.security_group_id[2]}"] #ELB SG
   elb_instances = [
-    "${module.instance.instance_id[1]}",
-    "${module.instance.instance_id[2]}"
+  
   ]
   environment = "${var.environment}"
 }

@@ -135,30 +135,6 @@ instances = [
             Purpose = "Practice"
             AvailabilityZone = "ap-south-1a"
         }
-    },
-    {
-        ami = "ami-009110a2bf8d7dd0a"
-        instance_type = "t2.micro"
-        associate_public_ip_address = "0"
-        subnet = "private_subnet-1a"
-        name = "Web_SVR_1"
-        tags = {
-            Domain  = "qa.techtales.com"
-            Purpose = "Practice"
-            AvailabilityZone = "ap-south-1a"
-        }
-    },
-    {
-        ami = "ami-009110a2bf8d7dd0a"
-        instance_type = "t2.micro"
-        associate_public_ip_address = "0"
-        subnet = "private_subnet-1b"
-        name = "Web_SVR_2"
-        tags = {
-            Domain  = "qa.techtales.com"
-            Purpose = "Practice"
-            AvailabilityZone = "ap-south-1b"
-        }
     }
 ]
 
