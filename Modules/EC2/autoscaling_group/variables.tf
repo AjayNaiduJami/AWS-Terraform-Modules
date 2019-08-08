@@ -14,6 +14,11 @@ variable "load_balancers" {
   type = "list"
 }
 
+variable "target_group_arns" {
+  type = "list"
+}
+
+
 variable "environment" {
   type = "string"
 }

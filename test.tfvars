@@ -162,6 +162,22 @@ security_group_rules = [
         protocol    = "tcp"
         cidr_blocks = "0.0.0.0/0"
     },
+    #Web SG Rule (http)
+    {
+        type        = "ingress"
+        from_port   = "80"
+        to_port     = "80"
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+    },
+    #web SG Rule (https)
+    {
+        type        = "ingress"
+        from_port   = "443"
+        to_port     = "443"
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+    },
     #ELB SG Rule (http)
     {
         type        = "ingress"
@@ -188,22 +204,42 @@ additional_security_group_rules = [
         to_port         = "22"
         protocol        = "tcp"
         source_security_group_id = "Bastian SG"
-    },
-    #WebSVR SG rule, (Access WebSVRs through ELB from port 80[http])
+    }
+]
+
+target_groups = [
     {
-        type            = "ingress"
-        from_port       = "80"
-        to_port         = "80"
-        protocol        = "tcp"
-        source_security_group_id = "ELB SG"
-    },
-    #WebSVR SG rule, (Access WebSVRs through ELB from port 443[https])
+        name        = "Web-TG-1"
+        port        = "80"
+        protocol    = "TCP"
+        target_type = "instance"
+        tags = {
+            Name = "web-tg"
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
+        health_check_interval = "5"
+        health_check_port = "80"
+        health_check_protocol = "TCP"
+        health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
+        healthy_threshold = "3"
+        unhealthy_threshold = "3"
+    }
+]
+
+load_balancers = [
     {
-        type            = "ingress"
-        from_port       = "443"
-        to_port         = "443"
-        protocol        = "tcp"
-        source_security_group_id = "ELB SG"
+        name               = "Web-NLB"
+        load_balancer_type = "network"
+        subnets = "Public subnets of websvr"
+        listener_port = "80"
+        listener_protocol = "HTTP"
+        target_group = "" #target_group_arn need to be specified at main.tf
+        tags = {
+            Name = "websvr-nlb"
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
     }
 ]
 
@@ -250,10 +286,10 @@ launch_configurations = [
 autoscaling_groups = [
     {
         name                      = "WebSVR-AutoScaling"
-        desired_capacity          = "2"
+        desired_capacity          = "1"
         vpc_zone_identifier       = "VPC private subnets" #subnets private
-        max_size                  = "2"
-        min_size                  = "2"
+        max_size                  = "1"
+        min_size                  = "1"
         load_balancers = "" #websvr lb can be atted to autoassign autoscaled instances to LB
         tags = {
             Domain  = "qa.techtales.com"

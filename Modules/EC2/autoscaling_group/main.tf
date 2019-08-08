@@ -6,6 +6,7 @@ resource "aws_autoscaling_group" "auto_scaling" {
   max_size                  = "${lookup(var.autoscaling_data[count.index],"max_size")}"
   min_size                  = "${lookup(var.autoscaling_data[count.index],"min_size")}"
   load_balancers = "${var.load_balancers}" #websvr lb can be atted to autoassign autoscaled instances to LB
+  target_group_arns = "${var.target_group_arns}"
   launch_configuration      = "${var.launch_configuration}"
   tags = [
       {

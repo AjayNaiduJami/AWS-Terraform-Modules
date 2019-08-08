@@ -46,6 +46,14 @@ output "instance_id" {
   value = "${module.instance.instance_id}"
 }
 
+output "target_group_id" {
+  value = "${module.target_groups.target_group_id}"
+}
+
+output "load_balancer_id" {
+  value = "${module.load_balancer.load_balancer_id}"
+}
+
 output "elb_id" {
   value = "${module.elb.elb_id}"
 }

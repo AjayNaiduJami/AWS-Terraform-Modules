@@ -50,7 +50,7 @@ variable "instances"  {
   type = "list"
   }
 
-  variable "security_groups"  {
+variable "security_groups"  {
   type = "list"
   }
 
@@ -59,6 +59,14 @@ variable "security_group_rules" {
 }
 
 variable "additional_security_group_rules" {
+  type = "list"
+}
+
+variable "target_groups" {
+  type = "list"
+}
+
+variable "load_balancers" {
   type = "list"
 }
 

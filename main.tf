@@ -40,17 +40,17 @@ module "security_group" {
 
   security_group_rule = "${var.security_group_rules}"
   security_group_id = [
-    "${module.security_group.security_group_id[0]}",
-    "${module.security_group.security_group_id[2]}",
-    "${module.security_group.security_group_id[2]}"
+    "${module.security_group.security_group_id[0]}",  #Bastian SG
+    "${module.security_group.security_group_id[1]}",  #Web SG
+    "${module.security_group.security_group_id[1]}",  #Web SG
+    "${module.security_group.security_group_id[2]}",  #ELB SG
+    "${module.security_group.security_group_id[2]}"   #ELB SG
   ]
 #Web SVR security group rule, (Web servers can only be accessed via port 22 (SSH) from Bastian SVR)
   additional_security_group_id = "${module.security_group.security_group_id[1]}" #Web SG
   additional_security_group_rule = "${var.additional_security_group_rules}"
   source_security_group_id = [
-    "${module.security_group.security_group_id[0]}",  #Bastian SG
-    "${module.security_group.security_group_id[2]}",  #ELB SG
-    "${module.security_group.security_group_id[2]}"   #ELB SG
+    "${module.security_group.security_group_id[0]}"  #Bastian SG
   ]
 }
 
@@ -65,6 +65,30 @@ module "instance" {
   security_group = [
     "${module.security_group.security_group_id[0]}"
   ]
+}
+
+module "target_groups" {
+  source = "./Modules/EC2/target_groups"
+  tg_data = "${var.target_groups}"
+  vpc_id = "${module.vpc.vpc_id[0]}"
+  environment = "${var.environment}"
+#Target group attachment :
+
+}
+
+module "load_balancer" {
+  source = "./Modules/EC2/load_balancer"
+  lb_data = "${var.load_balancers}"
+  lb_subnets = [
+    "${module.subnets.public_subnet_id[0]}",
+    "${module.subnets.public_subnet_id[1]}"
+  ]
+  lb_security_groups = [ #Only valid for Load Balancers of type application
+
+  ]
+  environment = "${var.environment}"
+  #listner:
+  target_group_arn = "${module.target_groups.target_group_id[0]}"
 }
 
 module "elb" {
@@ -94,8 +118,11 @@ module "autoscaling_group" {
   source      = "./Modules/EC2/autoscaling_group"
   autoscaling_data = "${var.autoscaling_groups}"
   launch_configuration = "${module.launch_configuration.launch_configuration_id[0]}"
+  target_group_arns = [
+    "${module.target_groups.target_group_id[0]}"
+  ]
   load_balancers = [
-    "${module.elb.elb_id[0]}"
+    
     ]
   autoscaling_subnets = [
     "${module.subnets.private_subnet_id[0]}",
