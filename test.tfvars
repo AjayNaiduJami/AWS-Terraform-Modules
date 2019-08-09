@@ -218,7 +218,7 @@ target_groups = [
             Domain  = "qa.techtales.com"
             Purpose = "Practice"
         }
-        health_check_interval = "5"
+        health_check_interval = "10" #min 10 for TCP
         health_check_port = "80"
         health_check_protocol = "TCP"
         health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
@@ -233,7 +233,7 @@ load_balancers = [
         load_balancer_type = "network"
         subnets = "Public subnets of websvr"
         listener_port = "80"
-        listener_protocol = "HTTP"
+        listener_protocol = "TCP" #must be one of 'TLS, TCP, UDP, TCP_UDP'
         target_group = "" #target_group_arn need to be specified at main.tf
         tags = {
             Name = "websvr-nlb"
