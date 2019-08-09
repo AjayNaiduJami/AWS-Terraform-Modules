@@ -74,6 +74,11 @@ variable "elbs" {
   type = "list"
 }
 
+variable "lb_listeners" {
+  type = "list"
+}
+
+
 variable "launch_configurations" {
   type = "list"
 }

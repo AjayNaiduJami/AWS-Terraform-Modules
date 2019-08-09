@@ -72,8 +72,6 @@ module "target_groups" {
   tg_data = "${var.target_groups}"
   vpc_id = "${module.vpc.vpc_id[0]}"
   environment = "${var.environment}"
-#Target group attachment :
-
 }
 
 module "load_balancer" {
@@ -87,23 +85,38 @@ module "load_balancer" {
 
   ]
   environment = "${var.environment}"
-  #listner:
-  target_group_arn = "${module.target_groups.target_group_id[0]}"
 }
 
-module "elb" {
-  source      = "./Modules/EC2/elb"
-  elb_data = "${var.elbs}"
-  elb_subnets = [
-    "${module.subnets.public_subnet_id[0]}",
-    "${module.subnets.public_subnet_id[1]}"
+module "lb_listeners" {
+  source = "./Modules/EC2/lb_listeners"
+  lb_listener_data = "${var.lb_listeners}"
+  load_balancer_arn = [
+    "${module.load_balancer.load_balancer_id[0]}",
+    "${module.load_balancer.load_balancer_id[0]}"
   ]
-  elb_security_groups = ["${module.security_group.security_group_id[2]}"] #ELB SG
-  elb_instances = [
-  
+  target_group_arn = [
+    "${module.target_groups.target_group_id[0]}",
+    "${module.target_groups.target_group_id[1]}"
   ]
-  environment = "${var.environment}"
+  certificate_arn = [
+    "",
+    "${module.acm.acm_id}"
+  ]
 }
+
+#module "elb" {
+#  source      = "./Modules/EC2/elb"
+#  elb_data = "${var.elbs}"
+#  elb_subnets = [
+#    "${module.subnets.public_subnet_id[0]}",
+#    "${module.subnets.public_subnet_id[1]}"
+#  ]
+#  elb_security_groups = ["${module.security_group.security_group_id[2]}"] #ELB SG
+#  elb_instances = [
+#  
+#  ]
+#  environment = "${var.environment}"
+#}
 
 module "launch_configuration" {
   source      = "./Modules/EC2/launch_configuration"
@@ -119,7 +132,8 @@ module "autoscaling_group" {
   autoscaling_data = "${var.autoscaling_groups}"
   launch_configuration = "${module.launch_configuration.launch_configuration_id[0]}"
   target_group_arns = [
-    "${module.target_groups.target_group_id[0]}"
+    "${module.target_groups.target_group_id[0]}",
+    "${module.target_groups.target_group_id[1]}"
   ]
   load_balancers = [
     
@@ -128,5 +142,14 @@ module "autoscaling_group" {
     "${module.subnets.private_subnet_id[0]}",
     "${module.subnets.private_subnet_id[1]}"
   ]
+  environment = "${var.environment}"
+}
+
+module "acm" {
+  source = "./Modules/EC2/acm"
+  priv_key = "privkey.pem"
+  cert_body = "cert.pem"
+  cert_chain = "chain.pem"
+  acm_name = "techtales.ml"
   environment = "${var.environment}"
 }

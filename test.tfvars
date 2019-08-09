@@ -211,7 +211,7 @@ target_groups = [
     {
         name        = "Web-TG-1"
         port        = "80"
-        protocol    = "TCP"
+        protocol    = "HTTP"
         target_type = "instance"
         tags = {
             Name = "web-tg"
@@ -220,7 +220,24 @@ target_groups = [
         }
         health_check_interval = "10" #min 10 for TCP
         health_check_port = "80"
-        health_check_protocol = "TCP"
+        health_check_protocol = "HTTP"
+        health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
+        healthy_threshold = "3"
+        unhealthy_threshold = "3"
+    },
+    {
+        name        = "Web-TG-2"
+        port        = "443"
+        protocol    = "HTTPS"
+        target_type = "instance"
+        tags = {
+            Name = "web-tg"
+            Domain  = "qa.techtales.com"
+            Purpose = "Practice"
+        }
+        health_check_interval = "10" #min 10 for TCP
+        health_check_port = "443"
+        health_check_protocol = "HTTPS"
         health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
         healthy_threshold = "3"
         unhealthy_threshold = "3"
@@ -232,14 +249,34 @@ load_balancers = [
         name               = "Web-NLB"
         load_balancer_type = "network"
         subnets = "Public subnets of websvr"
-        listener_port = "80"
-        listener_protocol = "TCP" #must be one of 'TLS, TCP, UDP, TCP_UDP'
-        target_group = "" #target_group_arn need to be specified at main.tf
         tags = {
             Name = "websvr-nlb"
             Domain  = "qa.techtales.com"
             Purpose = "Practice"
         }
+    }
+]
+
+lb_listeners = [
+    {
+        port = "80"
+        protocol = "TCP" #must be one of 'TLS, TCP, UDP, TCP_UDP'
+        ssl_policy = "" #Required if protocol is HTTPS or TLS
+        certificate_arn = "" #Exactly one certificate is required if the protocol is TLS
+
+        #default_action
+        type       = "forward" #Valid values are forward, redirect, fixed-response, authenticate-cognito and authenticate-oidc
+        target_group = "" #target_group_arn need to be specified at main.tf
+    },
+    {
+        port       = "443"
+        protocol   = "TLS" #must be one of 'TLS, TCP, UDP, TCP_UDP'
+        ssl_policy = "ELBSecurityPolicy-2016-08" #Required if protocol is HTTPS or TLS
+        certificate_arn = "" #to be specified at main.tf,Exactly one certificate is required if the protocol is TLS
+
+        #default_action
+        type       = "forward" #Valid values are forward, redirect, fixed-response, authenticate-cognito and authenticate-oidc
+        target_group = "" #target_group_arn need to be specified at main.tf
     }
 ]
 
@@ -286,10 +323,10 @@ launch_configurations = [
 autoscaling_groups = [
     {
         name                      = "WebSVR-AutoScaling"
-        desired_capacity          = "1"
+        desired_capacity          = "2"
         vpc_zone_identifier       = "VPC private subnets" #subnets private
-        max_size                  = "1"
-        min_size                  = "1"
+        max_size                  = "2"
+        min_size                  = "2"
         load_balancers = "" #websvr lb can be atted to autoassign autoscaled instances to LB
         tags = {
             Domain  = "qa.techtales.com"

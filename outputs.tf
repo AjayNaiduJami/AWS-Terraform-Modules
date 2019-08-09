@@ -54,9 +54,9 @@ output "load_balancer_id" {
   value = "${module.load_balancer.load_balancer_id}"
 }
 
-output "elb_id" {
-  value = "${module.elb.elb_id}"
-}
+#output "elb_id" {
+#  value = "${module.elb.elb_id}"
+#}
 
 output "launch_configuration_id" {
   value = "${module.launch_configuration.launch_configuration_id}"
@@ -64,4 +64,8 @@ output "launch_configuration_id" {
 
 output "autoscaling_group_id" {
   value = "${module.autoscaling_group.autoscaling_group_id}"
+}
+
+output "acm_id" {
+  value = "${module.acm.acm_id}"
 }

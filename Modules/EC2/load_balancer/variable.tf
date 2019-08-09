@@ -10,10 +10,6 @@ variable "lb_security_groups" {
   type = "list"
 }
 
-variable "target_group_arn" {
-  type = "string"
-}
-
 variable "environment" {
   type = "string"
 }
