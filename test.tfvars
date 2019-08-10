@@ -211,7 +211,7 @@ target_groups = [
     {
         name        = "Web-TG-1"
         port        = "80"
-        protocol    = "HTTP"
+        protocol    = "TCP" #TCP
         target_type = "instance"
         tags = {
             Name = "web-tg"
@@ -220,7 +220,7 @@ target_groups = [
         }
         health_check_interval = "10" #min 10 for TCP
         health_check_port = "80"
-        health_check_protocol = "HTTP"
+        health_check_protocol = "TCP"
         health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
         healthy_threshold = "3"
         unhealthy_threshold = "3"
@@ -228,7 +228,7 @@ target_groups = [
     {
         name        = "Web-TG-2"
         port        = "443"
-        protocol    = "HTTPS"
+        protocol    = "TLS" #TLS
         target_type = "instance"
         tags = {
             Name = "web-tg"
