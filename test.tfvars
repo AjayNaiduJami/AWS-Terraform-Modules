@@ -236,8 +236,8 @@ target_groups = [
             Purpose = "Practice"
         }
         health_check_interval = "10" #min 10 for TCP
-        health_check_port = "443"
-        health_check_protocol = "HTTPS"
+        health_check_port = "80"
+        health_check_protocol = "TCP"
         health_check_timeout = "" #health_check_timeout cannot be specified for health_check_protocol "TCP"
         healthy_threshold = "3"
         unhealthy_threshold = "3"
