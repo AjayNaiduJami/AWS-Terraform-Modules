@@ -271,7 +271,7 @@ lb_listeners = [
     {
         port       = "443"
         protocol   = "TLS" #must be one of 'TLS, TCP, UDP, TCP_UDP'
-        ssl_policy = "ELBSecurityPolicy-2016-08" #Required if protocol is HTTPS or TLS
+        ssl_policy = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06" #Required if protocol is HTTPS or TLS
         certificate_arn = "" #to be specified at main.tf,Exactly one certificate is required if the protocol is TLS
 
         #default_action
@@ -323,10 +323,10 @@ launch_configurations = [
 autoscaling_groups = [
     {
         name                      = "WebSVR-AutoScaling"
-        desired_capacity          = "2"
+        desired_capacity          = "1"
         vpc_zone_identifier       = "VPC private subnets" #subnets private
-        max_size                  = "2"
-        min_size                  = "2"
+        max_size                  = "1"
+        min_size                  = "1"
         load_balancers = "" #websvr lb can be atted to autoassign autoscaled instances to LB
         tags = {
             Domain  = "qa.techtales.com"

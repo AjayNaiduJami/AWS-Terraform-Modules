@@ -132,8 +132,8 @@ module "autoscaling_group" {
   autoscaling_data = "${var.autoscaling_groups}"
   launch_configuration = "${module.launch_configuration.launch_configuration_id[0]}"
   target_group_arns = [
-    "${module.target_groups.target_group_id[0]}",
-    "${module.target_groups.target_group_id[1]}"
+    "${module.target_groups.target_group_id[0]}"#,
+    #"${module.target_groups.target_group_id[1]}"
   ]
   load_balancers = [
     
