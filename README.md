@@ -80,9 +80,14 @@ Terraform AWS Individual Modules
 - Association of load balancer with Target Groups (only in Classic load balancer [NLB/ALB])
 
 
-**NOTE**: Using the resource `tags` functionality we can audit, track, and manage resources. 
+**NOTE**: Using the resource `tags` functionality we can audit, track and manage resources.
+
+##### The outputs displayed after Terraform Apply can be exported to a `.json` format by using command: 
+```bash
+terraform output -json > output_values.json
+```
 
 Authors
 =======
 
-Originally created and maintained by [Ajay Naidu Jami](https://github.com/AjayNaiduJami)
+**Originally created and maintained by [Ajay Naidu Jami](https://github.com/AjayNaiduJami)**
