@@ -88,6 +88,10 @@ Terraform AWS Individual Modules
 ```bash
 terraform output -json > output_values.json
 ```
+##### Or to a text file in standard format using command:
+```bash
+terraform output > output_values.txt
+```
 
 Authors
 =======
