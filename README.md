@@ -32,6 +32,8 @@ Terraform AWS Individual Modules
 
 ### Instances
 - Creation of Instances
+- Specification of root volume details
+- Attachment of additional volume to instance
 - Associating VPC and subnet in which instance need to be created
 - Adding user data file to execute at initial launch of instance/server
 - Associationg key file to access server via SSH
