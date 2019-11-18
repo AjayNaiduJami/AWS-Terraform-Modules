@@ -125,16 +125,23 @@ public_subnet_route_tables =  [
 
 instances = [
     {
-        ami = "ami-009110a2bf8d7dd0a"
+        ami = "ami-01a762e6f057d4dec"
         instance_type = "t2.micro"
         associate_public_ip_address = "1"
-        subnet = "public_subnet-1a"
-        name = "Bastian_SVR"
-        tags = {
-            Domain  = "qa.techtales.com"
-            Purpose = "Practice"
-            AvailabilityZone = "ap-south-1a"
-        }
+        subnet = "" #Subnet.id ins which  instance need to be created | need to be specified at main.tf
+        securitygroup_ids = "SecurityGroup" #SecurityGroup ID need to be specified at main.tf
+        key_name = "Terraform"
+        user_data = "user_data" # User data need to be specified at main.tf
+        #root_volume details:
+        root_volume_type = "gp2"
+        root_volume_size = "50"
+        delete_on_termination = "true"
+        #Extra volume details:
+        device_name = "/dev/sdh"
+        volume_id = "vol-0e272986d80756622"
+        #Tags:
+        name = "qa.techtales.com"
+        project = "project1"
     }
 ]
 
